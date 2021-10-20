@@ -7,18 +7,6 @@ export const parseObjectValue = (objectFields: any): any => {
     const { name, value } = field;
     if (value.kind === 'IntValue') value.value = parseInt(value.value);
 
-    if (value.kind === 'ListValue') {
-      var itemList: any[] = [];
-      value.values.forEach((e: any) => {
-        itemList.push(e.value);
-      });
-
-      return {
-        key: name.value,
-        value: itemList,
-      };
-    }
-
     return {
       key: name.value,
       value: value.value,
@@ -46,9 +34,6 @@ export const setQueryFilters = (
       case 'eq':
         collectionQuery = collectionQuery.where(actualKey, '==', value);
         break;
-      case 'neq':
-        collectionQuery = collectionQuery.where(actualKey, '!=', value);
-        break;
       case 'gt':
         collectionQuery = collectionQuery.where(actualKey, '>', value);
         break;
@@ -67,19 +52,6 @@ export const setQueryFilters = (
           'array-contains',
           value
         );
-        break;
-      case 'containsAny':
-        collectionQuery = collectionQuery.where(
-          actualKey,
-          'array-contains-any',
-          value
-        );
-        break;
-      case 'in':
-        collectionQuery = collectionQuery.where(actualKey, 'in', value);
-        break;
-      case 'notIn':
-        collectionQuery = collectionQuery.where(actualKey, 'not-in', value);
         break;
       default:
         collectionQuery = collectionQuery.where(key, '==', value);
